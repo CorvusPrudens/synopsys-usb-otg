@@ -442,6 +442,9 @@ impl<USB: UsbPeripheral> usb_device::bus::UsbBus for UsbBus<USB> {
                 }
             }
 
+            #[cfg(feature = "cortex-m")]
+            cortex_m::asm::delay(12_000_000);
+
             // Perform core soft-reset
             while read_reg!(otg_global, regs.global(), GRSTCTL, AHBIDL) == 0 {}
             modify_reg!(otg_global, regs.global(), GRSTCTL, CSRST: 1);
